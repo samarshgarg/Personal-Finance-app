@@ -16,28 +16,29 @@ function sumByCat(list) {
 
 // ---- MONTHLY ADVISOR ----
 // Returns ordered list of insight objects: { tone, title, body, priority }
-export function monthlyInsights({ expenses, budget, profile, goals, cards }) {
+export function monthlyInsights({ expenses, budget, profile, goals, cards, fixedTotal = 0 }) {
   const out = [];
   const tm = monthKey();
   const thisMonth = expenses.filter((e) => e.month === tm);
   const pm = prevMonthKey(tm);
   const prevMonth = expenses.filter((e) => e.month === pm);
 
-  const spent = thisMonth.reduce((s, e) => s + e.amt, 0);
+  const variableSpent = thisMonth.reduce((s, e) => s + e.amt, 0);
+  const spent = variableSpent + fixedTotal;
   const saved = profile.salary - spent;
   const rate = profile.salary ? (saved / profile.salary) * 100 : 0;
   const actual = sumByCat(thisMonth);
+  actual.Fixed = fixedTotal;
   const prevActual = sumByCat(prevMonth);
 
-  // 1. No data yet
+  // 1. No variable expenses logged yet — note it, but still advise on fixed costs
   if (thisMonth.length === 0) {
     out.push({
       tone: "info",
-      priority: 1,
-      title: "Log this month to unlock advice",
-      body: "Once you record this month's expenses in the Log tab, this section turns into a tailored monthly review built on your real numbers.",
+      priority: 4,
+      title: "No variable spending logged yet",
+      body: "Your fixed expenses are counted automatically. Log groceries, fuel and other variable spending in the Log tab for a complete monthly review.",
     });
-    return out;
   }
 
   // 2. Savings vs target — the headline
@@ -83,23 +84,23 @@ export function monthlyInsights({ expenses, budget, profile, goals, cards }) {
     }
   });
 
-  // 4. Month-over-month spending jump
+  // 4. Month-over-month variable spending jump (fixed costs are constant, so compare variable)
   if (prevMonth.length > 0) {
-    const prevSpent = prevMonth.reduce((s, e) => s + e.amt, 0);
-    const jump = spent - prevSpent;
+    const prevVariable = prevMonth.reduce((s, e) => s + e.amt, 0);
+    const jump = variableSpent - prevVariable;
     if (jump > 8000) {
       out.push({
         tone: "warn",
         priority: 4,
-        title: `Spending rose ${fmt(jump)} vs ${monthLabel(pm)}`,
-        body: `Your total outflow climbed from ${fmt(prevSpent)} to ${fmt(spent)}. Check which category grew — lifestyle creep is the quiet enemy of FI. A rise is fine if it was one-off; a problem if it's the new normal.`,
+        title: `Variable spending rose ${fmt(jump)} vs ${monthLabel(pm)}`,
+        body: `Your variable outflow climbed from ${fmt(prevVariable)} to ${fmt(variableSpent)}. Check which category grew — lifestyle creep is the quiet enemy of FI. A rise is fine if it was one-off; a problem if it's the new normal.`,
       });
     } else if (jump < -8000) {
       out.push({
         tone: "good",
         priority: 4,
-        title: `Spending dropped ${fmt(-jump)} vs ${monthLabel(pm)}`,
-        body: `Good control — outflow fell from ${fmt(prevSpent)} to ${fmt(spent)}. If this wasn't a fluke, raise your monthly SIP target in Settings to lock in the saving before it gets spent.`,
+        title: `Variable spending dropped ${fmt(-jump)} vs ${monthLabel(pm)}`,
+        body: `Good control — variable outflow fell from ${fmt(prevVariable)} to ${fmt(variableSpent)}. If this wasn't a fluke, raise your monthly SIP target in Settings to lock in the saving.`,
       });
     }
   }
@@ -144,7 +145,7 @@ export function monthlyInsights({ expenses, budget, profile, goals, cards }) {
 
 // ---- WEEKLY ADVISOR ----
 // Lighter, action-oriented nudges based on this month's pace so far.
-export function weeklyInsights({ expenses, budget, profile, cards }) {
+export function weeklyInsights({ expenses, budget, profile, cards, fixedTotal = 0 }) {
   const out = [];
   const tm = monthKey();
   const thisMonth = expenses.filter((e) => e.month === tm);
@@ -153,16 +154,16 @@ export function weeklyInsights({ expenses, budget, profile, cards }) {
   const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const monthFraction = dayOfMonth / daysInMonth;
 
-  const spent = thisMonth.reduce((s, e) => s + e.amt, 0);
+  const variableSpent = thisMonth.reduce((s, e) => s + e.amt, 0);
+  const spent = variableSpent + fixedTotal;
   const totalBudget = Object.values(budget).reduce((s, v) => s + v, 0);
 
   if (thisMonth.length === 0) {
     out.push({
       tone: "info",
-      title: "Nothing logged yet this month",
-      body: "Log expenses as they happen — even a 5-second entry. Weekly nudges need fresh data to be useful.",
+      title: "No variable spending logged yet",
+      body: "Fixed costs are tracked automatically. Log groceries, fuel and other variable spending as it happens so these weekly nudges stay accurate.",
     });
-    return out;
   }
 
   // pace check — are we spending faster than the month is passing?

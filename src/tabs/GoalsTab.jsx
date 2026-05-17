@@ -76,7 +76,7 @@ export default function GoalsTab({ goals, setGoals, profile }) {
       </SectionTitle>
 
       {/* goal cards */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 22 }}>
+      <div className="tab-grid" style={{ marginBottom: 22 }}>
         {goals.map((g) => {
           const pct = g.target ? (g.current / g.target) * 100 : 0;
           return (

@@ -1,6 +1,6 @@
 {
-  "name": "Paisa — Personal Finance OS",
-  "short_name": "Paisa",
+  "name": "Sam FinStats - Personal Finance OS",
+  "short_name": "Sam FinStats",
   "description": "Track expenses, goals, and the road to financial independence.",
   "start_url": "/",
   "display": "standalone",

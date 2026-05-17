@@ -1,20 +1,31 @@
-# Paisa - Personal Finance OS
+# Sam FinStats - Personal Finance OS
 
 A private, offline-first personal finance app. Tracks expenses, runs a monthly
-budget review, manages goal buckets, watches credit card debt, and projects your
-path to financial independence at 50.
+budget review, gives weekly and monthly advice, manages goal buckets, watches
+credit card debt, and projects your path to financial independence.
 
 All data lives ONLY in your browser (localStorage). Nothing is uploaded
 anywhere. No account, no server, no tracking.
 
 ## Features
 
-- Log      - enter expenses by category; switch between months
-- Review   - actual spend vs budget, savings rate, 6-month trend, monthly verdict
-- Goals    - four buckets (emergency fund, FI@50, travel, car) + corpus projection chart
+- Log      - log variable expenses; fixed expenses apply automatically
+- Review   - actual spend vs budget, savings rate, 6-month trend, verdict
+- Advisor  - weekly and monthly FI-focused guidance from your real numbers
+- Goals    - four buckets (emergency fund, FI@50, travel, car) + projection chart
 - Cards    - credit card watchdog tracking utilisation, flags revolving debt
 - Tax      - new vs old regime checker (FY 2025-26 rules)
-- Settings - edit your income/FI plan and budget; export a JSON backup
+- Settings - income/FI plan, fixed expenses, budget, theme, JSON backup
+
+Light and dark mode - toggle in the header or in Settings.
+Responsive - wide layout with top navigation on desktop, bottom nav on mobile.
+
+## Fixed expenses
+
+Enter recurring expenses (EMIs, insurance, parental support) as line items in
+Settings. Their total flows automatically into the Log and Review tabs every
+month - no need to log them manually. Change an amount in Settings and every
+tab updates.
 
 ## Run locally
 
@@ -27,17 +38,14 @@ Open the printed localhost URL in your browser.
 
 ## Deploy free to Vercel
 
-1. Create a free account at https://vercel.com
-2. Push this folder to a GitHub repository.
-3. In the Vercel dashboard click "New Project", import the repo.
-   Vercel auto-detects Vite - just click "Deploy".
-4. You get a public URL like paisa-xyz.vercel.app. Open it on your phone
-   and use "Add to Home Screen" - it installs like an app (PWA).
+1. Push this folder's CONTENTS (not the folder itself) to a GitHub repository,
+   so package.json sits at the top level of the repo.
+2. In Vercel, click "New Project" and import the repo. Vercel auto-detects
+   Vite - click "Deploy".
+3. You get a public URL. On your phone, use "Add to Home Screen" to install
+   it like an app.
 
-Alternatively, with the Vercel CLI:
-
-  npm install -g vercel
-  vercel
+Do NOT commit node_modules or dist - the included .gitignore handles this.
 
 Build settings (Vercel fills these in automatically):
 - Framework preset : Vite

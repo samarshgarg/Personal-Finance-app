@@ -34,16 +34,16 @@ function InsightCard({ insight }) {
   );
 }
 
-export default function AdvisorTab({ expenses, budget, profile, goals, cards }) {
+export default function AdvisorTab({ expenses, budget, profile, goals, cards, fixedTotal = 0 }) {
   const [mode, setMode] = useState("monthly");
 
   const monthly = useMemo(
-    () => monthlyInsights({ expenses, budget, profile, goals, cards }),
-    [expenses, budget, profile, goals, cards]
+    () => monthlyInsights({ expenses, budget, profile, goals, cards, fixedTotal }),
+    [expenses, budget, profile, goals, cards, fixedTotal]
   );
   const weekly = useMemo(
-    () => weeklyInsights({ expenses, budget, profile, cards }),
-    [expenses, budget, profile, cards]
+    () => weeklyInsights({ expenses, budget, profile, cards, fixedTotal }),
+    [expenses, budget, profile, cards, fixedTotal]
   );
   const fi = useMemo(() => fiHeadline(profile), [profile]);
 

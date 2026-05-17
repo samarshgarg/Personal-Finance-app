@@ -53,6 +53,16 @@ export const CATEGORIES = [
 export const catMeta = (id) =>
   CATEGORIES.find((c) => c.id === id) || { label: id, color: "#9b9aa3" };
 
+// short, readable category names for display (e.g. "CreditCard" -> "Credit Card")
+export const CAT_NAMES = {
+  Fixed: "Fixed",
+  Essentials: "Essentials",
+  Discretionary: "Discretionary",
+  Subscriptions: "Subscriptions",
+  CreditCard: "Credit Card",
+};
+export const catName = (id) => CAT_NAMES[id] || id;
+
 // ---- default monthly budget ----
 export const DEFAULT_BUDGET = {
   Fixed: 108000,
@@ -61,6 +71,18 @@ export const DEFAULT_BUDGET = {
   Subscriptions: 3360,
   CreditCard: 0,
 };
+
+// ---- fixed expense line items (editable in Settings) ----
+// These auto-populate the "Fixed" category in Log and Review.
+export const DEFAULT_FIXED = [
+  { id: "home", name: "Home loan EMI", amount: 45000 },
+  { id: "car", name: "Car loan EMI", amount: 25000 },
+  { id: "health", name: "Family health insurance", amount: 8000 },
+  { id: "parents", name: "Support to parents", amount: 30000 },
+];
+
+export const sumFixed = (items) =>
+  (items || []).reduce((s, i) => s + (Number(i.amount) || 0), 0);
 
 // ---- profile defaults (editable in Settings) ----
 export const DEFAULT_PROFILE = {

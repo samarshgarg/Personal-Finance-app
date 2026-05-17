@@ -55,7 +55,7 @@ export default function CardsTab({ cards, setCards }) {
 
       {/* card list */}
       {cards.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+        <div className="tab-grid" style={{ marginBottom: 16 }}>
           {cards.map((c) => {
             const util = c.lim ? (c.out / c.lim) * 100 : 0;
             const danger = util > 30;

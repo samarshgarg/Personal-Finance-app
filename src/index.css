@@ -1,4 +1,6 @@
-:root {
+/* ========== THEME VARIABLES ========== */
+:root,
+[data-theme="dark"] {
   --bg: #12131a;
   --bg-elev: #1a1c26;
   --bg-elev-2: #21232f;
@@ -19,6 +21,36 @@
   --blue: #6aa3e0;
   --violet: #9a8de0;
   --pink: #e08db0;
+  --halo: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232, 176, 75, 0.06), transparent);
+  --nav-bg: rgba(18, 19, 26, 0.94);
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ec;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #ece9e0;
+  --bg-input: #ffffff;
+  --border: #d8d4c6;
+  --border-soft: #e4e0d3;
+  --text: #1f1e1a;
+  --text-dim: #6b6960;
+  --text-faint: #9a978c;
+  --gold: #c98b1e;
+  --gold-dim: #a06f15;
+  --green: #2e8a57;
+  --green-bg: #e2f0e6;
+  --red: #c8403c;
+  --red-bg: #f6e3e2;
+  --amber: #b5821f;
+  --amber-bg: #f3e9d4;
+  --blue: #3a78c2;
+  --violet: #6f60c0;
+  --pink: #c25688;
+  --halo: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 139, 30, 0.07), transparent);
+  --nav-bg: rgba(245, 243, 236, 0.95);
+}
+
+:root {
   --serif: "Fraunces", Georgia, serif;
   --sans: "Spline Sans", system-ui, sans-serif;
   --mono: "Spline Sans Mono", monospace;
@@ -37,8 +69,9 @@ html, body {
 }
 
 body {
-  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232, 176, 75, 0.06), transparent);
+  background-image: var(--halo);
   min-height: 100vh;
+  transition: background-color 0.25s ease;
 }
 
 button { font-family: var(--sans); cursor: pointer; }
@@ -50,15 +83,45 @@ input[type="number"] { -moz-appearance: textfield; }
 
 ::selection { background: var(--gold); color: var(--bg); }
 
-/* scrollbar */
-::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-soft); }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 .fade-up { animation: fadeUp 0.35s ease both; }
+
+/* ========== RESPONSIVE LAYOUT ========== */
+.app-shell {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.tab-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .app-shell {
+    max-width: 1080px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  .tab-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .tab-grid .span-2 { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1280px) {
+  .app-shell { max-width: 1200px; }
+}
